@@ -20,14 +20,14 @@ func ConnectDatabase() {
 	dbPort := Config.GetInt(DatabasePort)
 	dbName := Config.GetString(DatabaseName)
 
-	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable TimeZone=Asia/Jakarta",
 		dbHost, dbPort, dbUser, dbPassword, dbName)
 
 	database, err := gorm.Open(postgres.Open(connStr), &gorm.Config{})
 	if err != nil {
 		Logger.Fatal("Failed to connect to database", zap.Error(err))
 	}
+	database.Exec("SET search_path TO digimon")
 
 	DB = database
-
 }

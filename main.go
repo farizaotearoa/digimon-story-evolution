@@ -25,6 +25,8 @@ func main() {
 	routes.SetupRoutes(r)
 
 	// Start server
-	utils.Logger.Info(fmt.Sprintf("Starting %s", utils.Config.GetString(utils.AppsName)))
+	appName := utils.Config.GetString(utils.AppsName)
+	utils.Logger.Info(fmt.Sprintf("Starting %s", appName))
+
 	r.Run(":9706")
 }
