@@ -6,5 +6,5 @@ import (
 )
 
 func SetupRoutes(router *gin.Engine) {
-	router.GET("/digimon", controllers.GetDigimonList)
+	router.GET("/digimon/list", controllers.GetDigimonList)
 }

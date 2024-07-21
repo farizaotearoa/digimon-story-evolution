@@ -3,6 +3,7 @@ module digimon-story-wiki
 go 1.20
 
 require (
+	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-gonic/gin v1.10.0
 	github.com/spf13/viper v1.19.0
 	go.uber.org/zap v1.27.0
