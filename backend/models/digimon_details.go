@@ -9,6 +9,7 @@ type DigimonDetails struct {
 	Attribute   string `gorm:"column:attribute" json:"attribute"`
 	Description string `gorm:"column:description" json:"description"`
 	Image       string `gorm:"column:image" json:"image"`
+	Icon        string `gorm:"column:icon" json:"icon"`
 }
 
 func (DigimonDetails) TableName() string {
