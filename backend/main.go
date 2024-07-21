@@ -4,6 +4,7 @@ import (
 	"digimon-story-wiki/routes"
 	"digimon-story-wiki/utils"
 	"fmt"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -22,6 +23,14 @@ func main() {
 
 	// Set up routes
 	r := gin.Default()
+
+	// CORS configuration
+	r.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"http://localhost:8080"},
+		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders: []string{"Origin", "Content-Type", "Accept"},
+	}))
+	r.Static("/images", "./images")
 	routes.SetupRoutes(r)
 
 	// Start server
