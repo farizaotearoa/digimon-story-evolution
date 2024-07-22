@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This project is a learning exercise where I explore the Gin framework for Golang, Vue.js, and PostgreSQL. It aims to create a web version of the Digimon evolution chart from the games Digimon Story Cyber Sleuth and Digimon Story Cyber Sleuth Hacker's Memory. Inspired by a helpful PDF chart, this project brings that idea to life as a web application with interactive features.
+This repository contains the backend for the Digimon Evolution Web App. It uses the Gin framework for Golang to provide a RESTful API that serves Digimon data to the frontend. This project is part of a learning exercise exploring new technologies and frameworks.
 
 ## Motivation
 
@@ -10,13 +10,13 @@ My love for Digimon Cyber Sleuth and Digimon Hacker's Memory games inspired me t
 
 ## Features
 
-- **Gin Framework**: Using Golang's Gin framework for the backend API.
-- **Vue.js**: Implementing the frontend with Vue.js.
-- **PostgreSQL**: Managing Digimon data with a PostgreSQL database.
-- **Interactive Evolution Chart**: An interactive web version of the digivolution chart with clickable Digimon images.
+- **Gin Framework**: Implements the backend API with Golang's Gin framework.
+- **PostgreSQL Integration**: Manages Digimon data with PostgreSQL.
+- **RESTful API**: Provides endpoints for retrieving and managing Digimon data.
 
 ## Technologies Used
 
 - **Backend**: Golang, Gin framework
-- **Frontend**: Vue.js
 - **Database**: PostgreSQL
+  
+For the frontend repository, visit [frontend repository](https://github.com/farizaotearoa/digimon-story-evolution-vue).
