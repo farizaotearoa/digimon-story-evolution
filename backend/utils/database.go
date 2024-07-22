@@ -27,7 +27,6 @@ func ConnectDatabase() {
 	if err != nil {
 		Logger.Fatal("Failed to connect to database", zap.Error(err))
 	}
-	database.Exec("SET search_path TO digimon")
 
 	DB = database
 }

@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	queryDigimonList = `SELECT dd.number, dd.name, dd.stage, dd.type, dd.attribute, dd.image, dd.icon FROM digimon_details dd %s ORDER BY %s %s LIMIT %d OFFSET %d;`
+	queryDigimonList     = `SELECT dd.number, dd.name, dd.stage, dd.type, dd.attribute, dd.image, dd.icon FROM digimon.digimon_details dd %s ORDER BY %s %s LIMIT %d OFFSET %d;`
+	queryDigimonListSize = `SELECT COUNT(*) FROM digimon.digimon_details dd %s;`
 )
 
 var sortBy = map[string]string{
@@ -29,6 +30,17 @@ func GetAllDigimonList(req request.DigimonListRequest) ([]response.DigimonListRe
 		return nil, err
 	}
 	return digimon, nil
+}
+
+func GetAllDigimonListSize(req request.DigimonListRequest) (int, error) {
+	var count int
+	query := fmt.Sprintf(queryDigimonListSize, constructWhereCondition(req))
+	utils.Logger.Info(query)
+	if err := utils.DB.Raw(query).Scan(&count).Error; err != nil {
+		utils.Logger.Error("Failed to GetAllDigimonListSize", zap.Error(err))
+		return 0, err
+	}
+	return count, nil
 }
 
 func constructWhereCondition(req request.DigimonListRequest) string {
