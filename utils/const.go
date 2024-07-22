@@ -13,4 +13,7 @@ const (
 	AppsPort = "apps.port"
 
 	LoggerPath = "logger.path"
+	ImagesPath = "images.path"
+
+	CorsAllowOrigins = "cors.allow_origins"
 )

@@ -26,16 +26,16 @@ func main() {
 
 	// CORS configuration
 	r.Use(cors.New(cors.Config{
-		AllowOrigins: []string{"http://localhost:8080"},
+		AllowOrigins: utils.Config.GetStringSlice(utils.CorsAllowOrigins),
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders: []string{"Origin", "Content-Type", "Accept"},
 	}))
-	r.Static("/images", "../files/images")
+	r.Static("/images", utils.Config.GetString(utils.ImagesPath))
 	routes.SetupRoutes(r)
 
 	// Start server
 	appName := utils.Config.GetString(utils.AppsName)
 	utils.Logger.Info(fmt.Sprintf("Starting %s", appName))
 
-	r.Run(":9706")
+	r.Run(":" + utils.Config.GetString(utils.AppsPort))
 }
