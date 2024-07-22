@@ -1,12 +1,11 @@
 <template>
-    <div class="layout">
+    <div class="main">
         <img :src="`http://localhost:9706/images/title/digimon-list.png`" class="title" alt="Digimon title">
         <div class="main-layout">
             <DigimonListFilter class="filter-section" @filter-change="updateFilters" />
             <div class="list-section">
                 <DigimonList :filters="filters" />
             </div>
-
         </div>
     </div>
 </template>
@@ -18,7 +17,7 @@ import DigimonList from './DigimonList.vue'
 export default {
     components: {
         DigimonListFilter,
-        DigimonList
+        DigimonList,
     },
     data() {
         return {
@@ -44,10 +43,9 @@ export default {
 <style scoped>
 .main-layout {
     display: flex;
-    height: 100vh;
 }
 
-.layout {
+.main {
     text-align: center;
     width: 1450px;
     margin-left: auto;

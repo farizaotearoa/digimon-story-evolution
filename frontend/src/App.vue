@@ -1,19 +1,22 @@
 <template>
   <div id="app">
-    <DigimonTitle />
+    <DigimonHeader />
     <DigimonList />
+    <DigimonFooter />
   </div>
 </template>
 
 <script>
+import DigimonHeader from './components/DigimonHeader.vue'
 import DigimonList from './components/DigimonList/DigimonListLayout.vue';
-import DigimonTitle from './components/DigimonTitle.vue'
+import DigimonFooter from './components/DigimonFooter.vue'
 
 export default {
   name: 'App',
   components: {
-    DigimonTitle,
-    DigimonList
+    DigimonHeader,
+    DigimonList,
+    DigimonFooter
   }
 };
 </script>
@@ -22,7 +25,6 @@ export default {
 body {
   margin: 0px;
   padding: 10px;
-  /* background-color: #3a3b3c; */
 }
 
 #app {
@@ -30,22 +32,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  /* background-color: #3a3b3c; */
-}
-
-@font-face {
-  font-family: 'Digivolve';
-  src: url('@/assets/fonts/Digivolve.woff2') format('woff2'),
-    url('@/assets/fonts/Digivolve.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Digivolve';
-  src: url('@/assets/fonts/DigivolveItalic.woff2') format('woff2'),
-    url('@/assets/fonts/DigivolveItalic.woff') format('woff');
-  font-weight: normal;
-  font-style: italic;
+  display: flex;
+  flex-direction: column;
 }
 </style>

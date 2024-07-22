@@ -18,20 +18,6 @@ export default {
     padding: 10px;
 }
 
-.image-container {
-    background-color: black;
-    /* background: linear-gradient(to bottom, #fbda04, #fa700a); */
-    padding: 10px;
-    display: inline-block;
-    position: absolute;
-    top: 5px;
-    left: 5px;
-}
-
-.image-container img {
-    display: block;
-}
-
 .image {
     width: 250px;
 }
