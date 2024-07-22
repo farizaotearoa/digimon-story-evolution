@@ -45,20 +45,6 @@ func GetDigimonListSize(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	if req.SortBy == "" {
-		req.SortBy = "number"
-	}
-	if req.SortOrder == "" {
-		req.SortOrder = "asc"
-	}
-	if req.PageSize == 0 {
-		req.PageSize = 20
-	}
-	if req.PageNum == 0 {
-		req.PageNum = 1
-	}
-
 	size, err := services.GetAllDigimonListSize(req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

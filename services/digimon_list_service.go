@@ -10,8 +10,25 @@ import (
 )
 
 const (
-	queryDigimonList     = `SELECT dd.number, dd.name, dd.stage, dd.type, dd.attribute, dd.image, dd.icon FROM digimon.digimon_details dd %s ORDER BY %s %s LIMIT %d OFFSET %d;`
-	queryDigimonListSize = `SELECT COUNT(*) FROM digimon.digimon_details dd %s;`
+	queryDigimonList = `SELECT 
+			dd.number, 
+			dd.name, 
+			dd.stage, 
+			dd.type, 
+			dd.attribute, 
+			dd.image, 
+			dd.icon 
+		FROM 
+			digimon.digimon_details dd 
+		%s 
+		ORDER BY 
+			%s %s 
+		LIMIT %d OFFSET %d;`
+	queryDigimonListSize = `SELECT 
+			COUNT(*) 
+		FROM 
+			digimon.digimon_details dd 
+		%s;`
 )
 
 var sortBy = map[string]string{
