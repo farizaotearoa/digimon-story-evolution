@@ -1,4 +1,4 @@
-package dto
+package response
 
 type DigimonDetails struct {
 	Number      int    `gorm:"column:number" json:"number"`

@@ -1,17 +1,59 @@
 package services
 
 import (
-	"digimon-story-wiki/dto"
+	"digimon-story-wiki/dto/request"
+	"digimon-story-wiki/dto/response"
 	"digimon-story-wiki/utils"
+	"fmt"
 	"go.uber.org/zap"
+	"strings"
 )
 
-func GetAllDigimonList() ([]dto.DigimonList, error) {
-	var digimon []dto.DigimonList
-	query := `SELECT dd.number, dd.name, dd.stage, dd.type, dd.attribute, dd.image, dd.icon FROM digimon_details dd ORDER BY dd.number`
+const (
+	queryDigimonList = `SELECT dd.number, dd.name, dd.stage, dd.type, dd.attribute, dd.image, dd.icon FROM digimon_details dd %s ORDER BY %s %s LIMIT %d OFFSET %d;`
+)
+
+var sortBy = map[string]string{
+	"number": "dd.number",
+	"name":   "dd.name",
+	"stage":  "array_position(ARRAY['Training 1', 'Training 2', 'Rookie', 'Champion', 'Ultimate', 'Mega', 'Ultra', 'Armor', 'No Stage'], dd.stage), dd.number",
+}
+
+func GetAllDigimonList(req request.DigimonListRequest) ([]response.DigimonListResponse, error) {
+	var digimon []response.DigimonListResponse
+	offset := (req.PageNum - 1) * req.PageSize
+	query := fmt.Sprintf(queryDigimonList, constructWhereCondition(req), sortBy[req.SortBy], strings.ToUpper(req.SortOrder), req.PageSize, offset)
+	utils.Logger.Info(query)
 	if err := utils.DB.Raw(query).Scan(&digimon).Error; err != nil {
 		utils.Logger.Error("Failed to GetAllDigimonList", zap.Error(err))
 		return nil, err
 	}
 	return digimon, nil
+}
+
+func constructWhereCondition(req request.DigimonListRequest) string {
+	whereCondition := ""
+
+	var inCondition []string
+	inCondition = append(inCondition, constructInCondition(req.Stage, "dd.stage"))
+	inCondition = append(inCondition, constructInCondition(req.Type, "dd.type"))
+	inCondition = append(inCondition, constructInCondition(req.Attribute, "dd.attribute"))
+
+	if inCondition[0] != "" || inCondition[1] != "" || inCondition[2] != "" {
+		whereCondition = "WHERE " + strings.Join(inCondition, " AND ")
+	}
+
+	return whereCondition
+}
+
+func constructInCondition(value []string, column string) string {
+	inCondition := ""
+	for i, level := range value {
+		value[i] = fmt.Sprintf("'%s'", level)
+	}
+	if len(value) > 0 {
+		inCondition = fmt.Sprintf("%s IN (%s)", column, strings.Join(value, ","))
+	}
+
+	return inCondition
 }
