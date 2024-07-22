@@ -1,8 +1,8 @@
 package request
 
 type DigimonListRequest struct {
-	PageSize  int      `json:"pageSize"`
-	PageNum   int      `json:"pageNum"`
+	PageSize  int      `json:"page_size"`
+	PageNum   int      `json:"page_num"`
 	SortBy    string   `json:"sort_by"`
 	SortOrder string   `json:"sort_order"`
 	Stage     []string `json:"stage"`
