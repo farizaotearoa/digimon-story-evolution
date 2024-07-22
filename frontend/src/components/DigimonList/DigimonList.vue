@@ -1,6 +1,5 @@
 <template>
     <div style="text-align: center;">
-        <img :src="`http://localhost:9706/images/title/digimon-list.png`" class="title" alt="Digimon title">
         <div class="view-buttons">
             <button @click="setGridView" :class="{ active: isGridView }">
                 <img src="@/assets/images/icon/grid-view.svg" alt="Grid View">
@@ -9,66 +8,107 @@
                 <img src="@/assets/images/icon/list-view.svg" alt="List View">
             </button>
         </div>
-        <div v-if="isGridView" class="grid-container" style="margin-top: 20px">
-            <div v-for="digimon in digimons" :key="digimon.number" class="grid-item">
-                <img :src="`http://localhost:9706/${digimon.image}`" class="image" :alt="digimon.name" :title="digimon.name">
-                <div class="flex-container">
-                    <img class="element-grid" :alt="`${digimon.type}-${digimon.attribute}`" :title="`${digimon.type}-${digimon.attribute}`"
-                        :src="`http://localhost:9706/images/element/${toLowerCase(digimon.type)}-${toLowerCase(digimon.attribute)}.png`" />
-                    <p class="name" style="margin-left:5px;">{{ digimon.name }}</p>
-                </div>
-                <p class="number">No. {{ formattedNumber(digimon.number) }}</p>
-                <div class="stage-container">
-                    <div :class="['stage-capsule', getStageClass(digimon.stage)]">
-                        {{ digimon.stage }}
+        <div v-if="!digimons">
+            <p class="no-data">No data to display</p>
+        </div>
+        <div v-else>
+            <div v-if="isGridView" class="grid-container" style="margin-top: 20px">
+                <div v-for="digimon in digimons" :key="digimon.number" class="grid-item">
+                    <img :src="`http://localhost:9706/${digimon.image}`" class="image" :alt="digimon.name"
+                        :title="digimon.name">
+                    <div class="flex-container">
+                        <img class="element-grid" :alt="`${digimon.type}-${digimon.attribute}`"
+                            :title="`${digimon.type}-${digimon.attribute}`"
+                            :src="`http://localhost:9706/images/element/${toLowerCase(digimon.type)}-${toLowerCase(digimon.attribute)}.png`" />
+                        <p class="name" style="margin-left:5px;">{{ digimon.name }}</p>
+                    </div>
+                    <p class="number">No. {{ formattedNumber(digimon.number) }}</p>
+                    <div class="stage-container">
+                        <div :class="['stage-capsule', getStageClass(digimon.stage)]">
+                            {{ digimon.stage }}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <ul v-else class="list-container">
-            <li v-for="digimon in digimons" :key="digimon.number" class="list-item">
-                <div class="flex-container">
-                    <div>
-                        <img :src="`http://localhost:9706/${digimon.icon}`" class="icon" :alt="digimon.name" :title="digimon.name">
-                    </div>
-                    <div style="margin-left: 10px;">
-                        <div class="flex-container">
-                            <img class="element-list" :alt="`${digimon.type}-${digimon.attribute}`" :title="`${digimon.type}-${digimon.attribute}`"
-                                :src="`http://localhost:9706/images/element/${toLowerCase(digimon.type)}-${toLowerCase(digimon.attribute)}.png`" />
-                            <p class="name" style="font-size: 1em; margin-left:5px">{{ digimon.name }}</p>
+            <ul v-else class="list-container">
+                <li v-for="digimon in digimons" :key="digimon.number" class="list-item">
+                    <div class="flex-container">
+                        <div>
+                            <img :src="`http://localhost:9706/${digimon.icon}`" class="icon" :alt="digimon.name"
+                                :title="digimon.name">
                         </div>
-                        <p class="number" style="margin-right:5px; font-size: 0.7em">
-                            No. {{ formattedNumber(digimon.number) }}
-                        </p>
-                        <div class="stage-container">
-                            <div :class="['stage-capsule', getStageClass(digimon.stage)]" style="font-size: 0.7rem;">
-                                {{ digimon.stage }}
+                        <div style="margin-left: 10px;">
+                            <div class="flex-container">
+                                <img class="element-list" :alt="`${digimon.type}-${digimon.attribute}`"
+                                    :title="`${digimon.type}-${digimon.attribute}`"
+                                    :src="`http://localhost:9706/images/element/${toLowerCase(digimon.type)}-${toLowerCase(digimon.attribute)}.png`" />
+                                <p class="name" style="font-size: 1em; margin-left:5px">{{ digimon.name }}</p>
+                            </div>
+                            <p class="number" style="margin-right:5px; font-size: 0.7em">
+                                No. {{ formattedNumber(digimon.number) }}
+                            </p>
+                            <div class="stage-container">
+                                <div :class="['stage-capsule', getStageClass(digimon.stage)]"
+                                    style="font-size: 0.7rem;">
+                                    {{ digimon.stage }}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </div>
     </div>
 </template>
 
 <script>
+import axios from '../../axios';
+
 export default {
+    props: {
+        filters: {
+            type: Object,
+            default: () => ({
+                stages: [],
+                types: [],
+                attributes: []
+            })
+        }
+    },
     data() {
         return {
-            isGridView: true,
-            digimons: []
+            digimons: [],
+            digimonListRequest: {
+                page_size: 20,
+                page_num: 1,
+                sort_by: "number",
+                sort_order: "asc"
+            },
+            isGridView: true
         };
     },
-    created() {
+    watch: {
+        filters: 'fetchDigimons'
+    },
+    mounted() {
         this.fetchDigimons();
     },
     methods: {
         async fetchDigimons() {
+            const { stages, types, attributes } = this.filters;
+            const requestBody = {
+                ...this.digimonListRequest,
+                stage: stages,
+                type: types,
+                attribute: attributes
+            };
             try {
-                const response = await fetch('http://localhost:9706/digimon/list');
-                this.digimons = await response.json();
+                const response = await axios.post('/digimon/list', requestBody, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                this.digimons = response.data
             } catch (error) {
                 console.error('Error fetching Digimon data:', error);
             }
@@ -117,12 +157,8 @@ export default {
 </script>
 
 <style scoped>
-.title {
-    width: 500px;
-}
-
 .image {
-    width: 250px;
+    width: 150px;
 }
 
 .icon {
@@ -145,8 +181,8 @@ export default {
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
 }
 
 .grid-item {
@@ -171,6 +207,11 @@ export default {
     margin-bottom: 10px;
 }
 
+.no-data {
+    font-weight: bold;
+    font-size: 2em;
+}
+
 .name {
     font-style: normal;
     font-weight: bold;
@@ -184,7 +225,7 @@ export default {
     font-weight: bolder;
     font-size: 1em;
     text-align: left;
-    margin: 0;
+    margin: 5px 0 0 0;
 }
 
 .stage-container {

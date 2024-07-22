@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import DigimonList from './components/DigimonList.vue';
+import DigimonList from './components/DigimonList/DigimonListLayout.vue';
 import DigimonTitle from './components/DigimonTitle.vue'
 
 export default {
