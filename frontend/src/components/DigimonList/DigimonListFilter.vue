@@ -6,14 +6,14 @@
                 <p class="filter-title">Stage</p>
                 <div v-for="stage in stages" :key="stage">
                     <input type="checkbox" :id="'stage-' + stage" :value="stage" v-model="selectedStages" />
-                    <label :for="'stage-' + stage">{{ stage }}</label>
+                    <label class="checkbox-label" :for="'stage-' + stage">{{ stage }}</label>
                 </div>
             </div>
             <div class="type">
                 <p class="filter-title">Type</p>
                 <div v-for="type in types" :key="type">
                     <input type="checkbox" :id="'type-' + type" :value="type" v-model="selectedTypes" />
-                    <label :for="'type-' + type">{{ type }}</label>
+                    <label class="checkbox-label" :for="'type-' + type">{{ type }}</label>
                 </div>
             </div>
             <div class="attribute">
@@ -21,7 +21,7 @@
                 <div v-for="attribute in attributes" :key="attribute">
                     <input type="checkbox" :id="'attribute-' + attribute" :value="attribute"
                         v-model="selectedAttributes" />
-                    <label :for="'attribute-' + attribute">{{ attribute }}</label>
+                    <label class="checkbox-label" :for="'attribute-' + attribute">{{ attribute }}</label>
                 </div>
             </div>
         </div>
@@ -96,5 +96,9 @@ export default {
     font-weight: bold;
     font-size: 1em;
     color: #757575;
+}
+
+.checkbox-label {
+    font-weight: 500;
 }
 </style>

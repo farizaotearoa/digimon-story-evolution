@@ -59,6 +59,34 @@
             </ul>
         </div>
     </div>
+    <div class="pagination-controls">
+        <div class="page-buttons">
+            <button @click="prevPage" :disabled="digimonListRequest.page_num === 1" class="arrow-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+                <span class="sr-only">Previous</span>
+            </button>
+            <div class="page-numbers">
+                <button v-for="page in totalPages" :key="page" @click="goToPage(page)"
+                    :class="{ active: page === digimonListRequest.page_num }">
+                    {{ page }}
+                </button>
+            </div>
+            <button @click="nextPage" :disabled="digimonListRequest.page_num === totalPages" class="arrow-button">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 18l6-6-6-6" />
+                </svg>
+                <span class="sr-only">Next</span>
+            </button>
+        </div>
+        <label style="font-weight: bold;" for="page-size">Page Size:</label>
+        <select id="page-size" class="page-size" v-model="digimonListRequest.page_size" @change="fetchDigimons">
+            <option v-for="size in pageSizes" :key="size" :value="size">{{ size }}</option>
+        </select>
+    </div>
 </template>
 
 <script>
@@ -75,6 +103,11 @@ export default {
             })
         }
     },
+    computed: {
+        totalPages() {
+            return Math.ceil(this.totalItems / this.digimonListRequest.page_size);
+        }
+    },
     data() {
         return {
             digimons: [],
@@ -84,14 +117,17 @@ export default {
                 sort_by: "number",
                 sort_order: "asc"
             },
+            pageSizes: [20, 40, 80],
+            totalItems: 0,
             isGridView: true
         };
     },
     watch: {
-        filters: 'fetchDigimons'
+        filters: 'resetPageAndFetch'
     },
     mounted() {
         this.fetchDigimons();
+        this.fetchTotalItems();
     },
     methods: {
         async fetchDigimons() {
@@ -112,6 +148,51 @@ export default {
             } catch (error) {
                 console.error('Error fetching Digimon data:', error);
             }
+        },
+        async fetchTotalItems() {
+            const { stages, types, attributes } = this.filters;
+            const requestBody = {
+                ...this.digimonListRequest,
+                stage: stages,
+                type: types,
+                attribute: attributes
+            };
+            try {
+                const response = await axios.post('/digimon/list/size', requestBody, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                this.totalItems = response.data.size;
+            } catch (error) {
+                console.error('Error fetching total items:', error);
+            }
+        },
+        updatePageSize() {
+            this.digimonListRequest.page_num = 1;
+            this.fetchDigimon();
+            this.fetchTotalItems();
+        },
+        prevPage() {
+            if (this.digimonListRequest.page_num > 1) {
+                this.digimonListRequest.page_num--;
+                this.fetchDigimons();
+            }
+        },
+        nextPage() {
+            this.digimonListRequest.page_num++;
+            this.fetchDigimons();
+        },
+        goToPage(page) {
+            if (page >= 1 && page <= this.totalPages) {
+                this.digimonListRequest.page_num = page;
+                this.fetchDigimons();
+            }
+        },
+        resetPageAndFetch() {
+            this.digimonListRequest.page_num = 1;
+            this.fetchDigimons();
+            this.fetchTotalItems();
         },
         getStageClass(stage) {
             switch (stage) {
@@ -277,41 +358,6 @@ export default {
     border: 1px solid #000;
 }
 
-.subtitle {
-    font-family: 'Digivolve', sans-serif;
-    font-style: normal;
-    font-size: 4rem;
-    margin: 0px 10px;
-    background: linear-gradient(to bottom, #fbda04, #fa700a);
-    /* background: linear-gradient(to bottom, #fff, #fff); */
-    color: transparent;
-    position: relative;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    display: inline-block;
-}
-
-.subtitle::before {
-    content: 'Digimon List';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: -1;
-    color: #374e98;
-    font-family: 'Digivolve', sans-serif;
-    font-size: 4rem;
-    font-weight: bold;
-    text-shadow:
-        3px -1px 0 #374e98,
-        0px -3px 0 #374e98,
-        1px 2px 0 #374e98,
-        3px 1px 0 #374e98;
-    display: block;
-}
-
 .view-buttons {
     display: flex;
     gap: 10px;
@@ -335,5 +381,82 @@ export default {
 
 .view-buttons button.active {
     background-color: #f0f0f0;
+}
+
+.pagination-controls {
+    margin: 20px 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.pagination-controls label {
+    margin-right: 10px;
+}
+
+.pagination-controls select,
+.pagination-controls input {
+    margin-right: 20px;
+}
+
+.arrow-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.arrow-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+.arrow-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.page-buttons {
+    margin-right: 10px;
+    display: flex;
+}
+
+.page-size {
+    margin-right: 0px;
+    font-size: 0.8em;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+.page-numbers {
+    display: flex;
+    gap: 5px;
+}
+
+.page-numbers button {
+    background: transparent;
+    border: 0px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+.page-numbers button.active {
+    background-color: #374e98;
+    color: #fff;
 }
 </style>
