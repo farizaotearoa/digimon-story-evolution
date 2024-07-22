@@ -11,8 +11,12 @@
         </div>
         <div v-if="isGridView" class="grid-container" style="margin-top: 20px">
             <div v-for="digimon in digimons" :key="digimon.number" class="grid-item">
-                <img :src="`http://localhost:9706/${digimon.image}`" class="image" alt="{{ digimon.name }}">
-                <p class="name">{{ digimon.name }}</p>
+                <img :src="`http://localhost:9706/${digimon.image}`" class="image" :alt="digimon.name" :title="digimon.name">
+                <div class="flex-container">
+                    <img class="element-grid" :alt="`${digimon.type}-${digimon.attribute}`" :title="`${digimon.type}-${digimon.attribute}`"
+                        :src="`http://localhost:9706/images/element/${toLowerCase(digimon.type)}-${toLowerCase(digimon.attribute)}.png`" />
+                    <p class="name" style="margin-left:5px;">{{ digimon.name }}</p>
+                </div>
                 <p class="number">No. {{ formattedNumber(digimon.number) }}</p>
                 <div class="stage-container">
                     <div :class="['stage-capsule', getStageClass(digimon.stage)]">
@@ -23,15 +27,27 @@
         </div>
         <ul v-else class="list-container">
             <li v-for="digimon in digimons" :key="digimon.number" class="list-item">
-                <p class="name" style="font-size: 1em;">{{ digimon.name }}</p>
-                <p class="number" style="margin-right:5px; font-size: 0.7em">
-                    No. {{ formattedNumber(digimon.number) }}
-                </p>
-                <div class="stage-container">
-                    <div :class="['stage-capsule', getStageClass(digimon.stage)]" style="font-size: 0.7rem;">
-                        {{ digimon.stage }}
+                <div class="flex-container">
+                    <div>
+                        <img :src="`http://localhost:9706/${digimon.icon}`" class="icon" :alt="digimon.name" :title="digimon.name">
+                    </div>
+                    <div style="margin-left: 10px;">
+                        <div class="flex-container">
+                            <img class="element-list" :alt="`${digimon.type}-${digimon.attribute}`" :title="`${digimon.type}-${digimon.attribute}`"
+                                :src="`http://localhost:9706/images/element/${toLowerCase(digimon.type)}-${toLowerCase(digimon.attribute)}.png`" />
+                            <p class="name" style="font-size: 1em; margin-left:5px">{{ digimon.name }}</p>
+                        </div>
+                        <p class="number" style="margin-right:5px; font-size: 0.7em">
+                            No. {{ formattedNumber(digimon.number) }}
+                        </p>
+                        <div class="stage-container">
+                            <div :class="['stage-capsule', getStageClass(digimon.stage)]" style="font-size: 0.7rem;">
+                                {{ digimon.stage }}
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </li>
         </ul>
     </div>
@@ -92,6 +108,9 @@ export default {
             } else {
                 return number.toString();
             }
+        },
+        toLowerCase(str) {
+            return str.toLowerCase();
         }
     }
 };
@@ -104,6 +123,24 @@ export default {
 
 .image {
     width: 250px;
+}
+
+.icon {
+    width: 72px;
+}
+
+.element-grid {
+    width: 30px;
+    height: 30px;
+}
+
+.element-list {
+    width: 20px;
+    height: 20px;
+}
+
+.flex-container {
+    display: flex;
 }
 
 .grid-container {
@@ -196,6 +233,7 @@ export default {
 .no-stage {
     background-color: #fff;
     color: #000;
+    border: 1px solid #000;
 }
 
 .subtitle {
