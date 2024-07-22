@@ -40,7 +40,13 @@ func constructWhereCondition(req request.DigimonListRequest) string {
 	inCondition = append(inCondition, constructInCondition(req.Attribute, "dd.attribute"))
 
 	if inCondition[0] != "" || inCondition[1] != "" || inCondition[2] != "" {
-		whereCondition = "WHERE " + strings.Join(inCondition, " AND ")
+		var nonEmpty []string
+		for _, el := range inCondition {
+			if el != "" {
+				nonEmpty = append(nonEmpty, el)
+			}
+		}
+		whereCondition = "WHERE " + strings.Join(nonEmpty, " AND ")
 	}
 
 	return whereCondition
