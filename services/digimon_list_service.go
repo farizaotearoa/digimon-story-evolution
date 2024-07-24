@@ -32,14 +32,18 @@ const (
 )
 
 var sortBy = map[string]string{
-	"number": "dd.number",
-	"name":   "dd.name",
-	"stage":  "array_position(ARRAY['Training 1', 'Training 2', 'Rookie', 'Champion', 'Ultimate', 'Mega', 'Ultra', 'Armor', 'No Stage'], dd.stage), dd.number",
+	"number":     "dd.number",
+	"name":       "dd.name",
+	"stage-asc":  "array_position(ARRAY['Training 1', 'Training 2', 'Rookie', 'Champion', 'Ultimate', 'Mega', 'Ultra', 'Armor', 'No Stage'], dd.stage), dd.number",
+	"stage-desc": "array_position(ARRAY['Armor', 'Ultra', 'Mega', 'Ultimate', 'Champion', 'Rookie', 'Training 2', 'Training 1', 'No Stage'], dd.stage), dd.number",
 }
 
 func GetAllDigimonList(req request.DigimonListRequest) ([]response.DigimonListResponse, error) {
 	var digimon []response.DigimonListResponse
 	offset := (req.PageNum - 1) * req.PageSize
+	if req.SortBy == "stage" {
+		req.SortBy = req.SortBy + "-" + req.SortOrder
+	}
 	query := fmt.Sprintf(queryDigimonList, constructWhereCondition(req), sortBy[req.SortBy], strings.ToUpper(req.SortOrder), req.PageSize, offset)
 	utils.Logger.Info(query)
 	if err := utils.DB.Raw(query).Scan(&digimon).Error; err != nil {
