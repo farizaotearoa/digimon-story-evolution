@@ -4,6 +4,7 @@ import (
 	"fmt"
 	_viper "github.com/spf13/viper"
 	"log"
+	"os"
 	"strings"
 	"sync"
 )
@@ -39,6 +40,9 @@ func InitConfig() error {
 	}
 
 	v.AutomaticEnv()
+	for _, env := range os.Environ() {
+		log.Println(env)
+	}
 	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
 	Config = &viper{
@@ -47,7 +51,7 @@ func InitConfig() error {
 	}
 
 	_viper.Set("test_key", "test_value")
-	testValue := Config.GetString("test_key")
+	testValue := _viper.GetString("test_key")
 	log.Printf("Test Key Value: %s", testValue)
 
 	return nil
