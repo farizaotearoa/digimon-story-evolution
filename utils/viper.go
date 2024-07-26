@@ -36,9 +36,9 @@ func InitConfig() error {
 	if err := v.ReadInConfig(); err != nil {
 		v = _viper.New()
 		v.AutomaticEnv()
-		_viper.Set("test.key", "test.value")
-		testValue := v.GetString("test.key")
-		log.Printf("Test Key Value: %s", testValue)
+		v.Set("test.key", "test.value")
+		log.Printf("Test Key Value from v: %s", v.GetString("test.key"))
+		log.Printf("Test Key Value from viper: %s", _viper.GetString("test.key"))
 		fmt.Println("Config file not found; falling back to environment variables.")
 	}
 
