@@ -15,6 +15,8 @@ func main() {
 		panic("Failed to initialize configuration: " + err.Error())
 	}
 
+	fmt.Println("CONFIG_LOGGER_PATH:", os.Getenv("config.logger.path"))
+
 	//Initialize Logger
 	utils.InitLogger()
 	defer utils.Logger.Sync()
