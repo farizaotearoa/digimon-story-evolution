@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	_viper "github.com/spf13/viper"
+	"log"
 	"sync"
 )
 
@@ -35,6 +36,9 @@ func InitConfig() error {
 	if err := v.ReadInConfig(); err != nil {
 		v = _viper.New()
 		v.AutomaticEnv()
+		_viper.Set("test.key", "test.value")
+		testValue := v.GetString("test.key")
+		log.Printf("Test Key Value: %s", testValue)
 		fmt.Println("Config file not found; falling back to environment variables.")
 	}
 
