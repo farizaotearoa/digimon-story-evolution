@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	_viper "github.com/spf13/viper"
+	"strings"
 	"sync"
 )
 
@@ -37,6 +38,7 @@ func InitConfig() error {
 	}
 
 	v.AutomaticEnv()
+	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
 	Config = &viper{
 		viper: v,
