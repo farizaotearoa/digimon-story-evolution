@@ -3,9 +3,6 @@ package utils
 import (
 	"fmt"
 	_viper "github.com/spf13/viper"
-	"log"
-	"os"
-	"strings"
 	"sync"
 )
 
@@ -36,23 +33,15 @@ func InitConfig() error {
 	v.AddConfigPath(".")
 
 	if err := v.ReadInConfig(); err != nil {
+		v = _viper.New()
+		v.AutomaticEnv()
 		fmt.Println("Config file not found; falling back to environment variables.")
 	}
-
-	v.AutomaticEnv()
-	for _, env := range os.Environ() {
-		log.Println(env)
-	}
-	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
 	Config = &viper{
 		viper: v,
 		Mutex: &sync.Mutex{},
 	}
-
-	_viper.Set("test_key", "test_value")
-	testValue := _viper.GetString("test_key")
-	log.Printf("Test Key Value: %s", testValue)
 
 	return nil
 }
