@@ -11,7 +11,6 @@ import (
 var Logger *zap.Logger
 
 func InitLogger() {
-	fmt.Println("Logger Path (", ConfigRootKey+LoggerPath, ") :", Config.GetString(LoggerPath))
 	logDir := fmt.Sprintf("%s/%s", Config.GetString(LoggerPath), Config.GetString(AppsName))
 	if err := os.MkdirAll(logDir, os.ModePerm); err != nil {
 		panic("Failed to create log directory: " + err.Error())

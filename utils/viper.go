@@ -3,6 +3,9 @@ package utils
 import (
 	"fmt"
 	_viper "github.com/spf13/viper"
+	"os"
+	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -11,17 +14,62 @@ type Viper interface {
 }
 
 type viper struct {
-	viper *_viper.Viper
+	viper  *_viper.Viper
+	loaded bool
 	*sync.Mutex
 }
 
-func (v *viper) GetInt(key string) int         { return v.viper.GetInt(ConfigRootKey + key) }
-func (v *viper) GetInt64(key string) int64     { return v.viper.GetInt64(ConfigRootKey + key) }
-func (v *viper) GetFloat64(key string) float64 { return v.viper.GetFloat64(ConfigRootKey + key) }
-func (v *viper) GetBool(key string) bool       { return v.viper.GetBool(ConfigRootKey + key) }
-func (v *viper) GetString(key string) string   { return v.viper.GetString(ConfigRootKey + key) }
+func (v *viper) GetInt(key string) int {
+	fullKey := ConfigRootKey + key
+	if v.loaded {
+		return v.viper.GetInt(fullKey)
+	} else {
+		val, _ := strconv.Atoi(os.Getenv(fullKey))
+		return val
+	}
+}
+func (v *viper) GetInt64(key string) int64 {
+	fullKey := ConfigRootKey + key
+	if v.loaded {
+		return v.viper.GetInt64(fullKey)
+	} else {
+		val, _ := strconv.ParseInt(os.Getenv(fullKey), 10, 64)
+		return val
+	}
+}
+func (v *viper) GetFloat64(key string) float64 {
+	fullKey := ConfigRootKey + key
+	if v.loaded {
+		return v.viper.GetFloat64(fullKey)
+	} else {
+		val, _ := strconv.ParseFloat(os.Getenv(fullKey), 64)
+		return val
+	}
+}
+func (v *viper) GetBool(key string) bool {
+	fullKey := ConfigRootKey + key
+	if v.loaded {
+		return v.viper.GetBool(fullKey)
+	} else {
+		val, _ := strconv.ParseBool(os.Getenv(fullKey))
+		return val
+	}
+}
+func (v *viper) GetString(key string) string {
+	fullKey := ConfigRootKey + key
+	if v.loaded {
+		return v.viper.GetString(fullKey)
+	} else {
+		return os.Getenv(fullKey)
+	}
+}
 func (v *viper) GetStringSlice(key string) []string {
-	return v.viper.GetStringSlice(ConfigRootKey + key)
+	fullKey := ConfigRootKey + key
+	if v.loaded {
+		return v.viper.GetStringSlice(fullKey)
+	} else {
+		return strings.Split(os.Getenv(fullKey), ",")
+	}
 }
 
 var Config Viper
@@ -31,31 +79,18 @@ func InitConfig() error {
 	v.SetConfigName(".env")
 	v.SetConfigType("json")
 	v.AddConfigPath(".")
+	loaded := true
 
 	if err := v.ReadInConfig(); err != nil {
-		v = _viper.New()
-		initDefaultConfig(v)
-		v.AutomaticEnv()
+		loaded = false
 		fmt.Println("Config file not found; falling back to environment variables.")
 	}
 
 	Config = &viper{
-		viper: v,
-		Mutex: &sync.Mutex{},
+		viper:  v,
+		loaded: loaded,
+		Mutex:  &sync.Mutex{},
 	}
 
 	return nil
-}
-
-func initDefaultConfig(v *_viper.Viper) {
-	v.Set(ConfigRootKey+DatabaseHost, "")
-	v.Set(ConfigRootKey+DatabasePort, "")
-	v.Set(ConfigRootKey+DatabaseName, "")
-	v.Set(ConfigRootKey+DatabaseUsername, "")
-	v.Set(ConfigRootKey+DatabasePassword, "")
-	v.Set(ConfigRootKey+AppsName, "")
-	v.Set(ConfigRootKey+AppsPort, "")
-	v.Set(ConfigRootKey+LoggerPath, "")
-	v.Set(ConfigRootKey+ImagesPath, "")
-	v.Set(ConfigRootKey+CorsAllowOrigins, []string{""})
 }
