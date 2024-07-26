@@ -3,6 +3,7 @@ package routes
 import (
 	"digimon-story-evolution/controllers"
 	"digimon-story-evolution/utils"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
@@ -16,6 +17,9 @@ func SetupRoutes(router *gin.Engine) {
 }
 
 func SetupImagesRoutes(router *gin.Engine) {
+	fmt.Println("images path:", utils.Config.GetString(utils.ImagesPath))
+	fmt.Println("contain http:", strings.Contains(utils.Config.GetString(utils.ImagesPath), "http"))
+
 	if strings.Contains(utils.Config.GetString(utils.ImagesPath), "http") {
 		router.GET("/images/*imagePath", func(c *gin.Context) {
 			imagePath := c.Param("imagePath")
