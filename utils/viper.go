@@ -3,6 +3,7 @@ package utils
 import (
 	"fmt"
 	_viper "github.com/spf13/viper"
+	"log"
 	"strings"
 	"sync"
 )
@@ -44,6 +45,10 @@ func InitConfig() error {
 		viper: v,
 		Mutex: &sync.Mutex{},
 	}
+
+	_viper.Set("test_key", "test_value")
+	testValue := Config.GetString("test_key")
+	log.Printf("Test Key Value: %s", testValue)
 
 	return nil
 }
