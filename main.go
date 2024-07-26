@@ -31,15 +31,16 @@ func main() {
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE"},
 		AllowHeaders: []string{"Origin", "Content-Type", "Accept"},
 	}))
-	r.Static("/images", utils.Config.GetString(utils.ImagesPath))
+
 	routes.SetupRoutes(r)
+	routes.SetupImagesRoutes(r)
 
 	// Start server
 	appName := utils.Config.GetString(utils.AppsName)
 	utils.Logger.Info(fmt.Sprintf("Starting %s", appName))
 
-	port := ""
-	if utils.Config.GetString(utils.AppsPort) == "" {
+	port := utils.Config.GetString(utils.AppsPort)
+	if port == "" {
 		port = os.Getenv("PORT")
 	}
 	r.Run(":" + port)
