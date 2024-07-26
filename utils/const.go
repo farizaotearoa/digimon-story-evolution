@@ -8,6 +8,7 @@ const (
 	DatabaseName     = "database.name"
 	DatabaseUsername = "database.username"
 	DatabasePassword = "database.password"
+	DatabaseSslMode  = "database.ssl_mode"
 
 	AppsName = "apps.name"
 	AppsPort = "apps.port"
