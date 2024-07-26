@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"os"
 )
 
 func main() {
@@ -37,5 +38,9 @@ func main() {
 	appName := utils.Config.GetString(utils.AppsName)
 	utils.Logger.Info(fmt.Sprintf("Starting %s", appName))
 
-	r.Run(":" + utils.Config.GetString(utils.AppsPort))
+	port := ""
+	if utils.Config.GetString(utils.AppsPort) == "" {
+		port = os.Getenv("PORT")
+	}
+	r.Run(":" + port)
 }
