@@ -34,8 +34,8 @@ func InitConfig() error {
 
 	if err := v.ReadInConfig(); err != nil {
 		v = _viper.New()
+		initDefaultConfig(v)
 		v.AutomaticEnv()
-		_ = v.ReadInConfig()
 		fmt.Println("Config file not found; falling back to environment variables.")
 	}
 
@@ -45,4 +45,17 @@ func InitConfig() error {
 	}
 
 	return nil
+}
+
+func initDefaultConfig(v *_viper.Viper) {
+	v.SetDefault(ConfigRootKey+DatabaseHost, "")
+	v.SetDefault(ConfigRootKey+DatabasePort, "")
+	v.SetDefault(ConfigRootKey+DatabaseName, "")
+	v.SetDefault(ConfigRootKey+DatabaseUsername, "")
+	v.SetDefault(ConfigRootKey+DatabasePassword, "")
+	v.SetDefault(ConfigRootKey+AppsName, "")
+	v.SetDefault(ConfigRootKey+AppsPort, "")
+	v.SetDefault(ConfigRootKey+LoggerPath, "")
+	v.SetDefault(ConfigRootKey+ImagesPath, "")
+	v.SetDefault(ConfigRootKey+CorsAllowOrigins, []string{""})
 }
