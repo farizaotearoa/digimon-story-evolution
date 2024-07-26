@@ -1,9 +1,9 @@
 package services
 
 import (
-	"digimon-story-wiki/dto/request"
-	"digimon-story-wiki/dto/response"
-	"digimon-story-wiki/utils"
+	"digimon-story-evolution/dto/request"
+	"digimon-story-evolution/dto/response"
+	"digimon-story-evolution/utils"
 	"fmt"
 	"go.uber.org/zap"
 )

@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"digimon-story-wiki/dto/request"
-	"digimon-story-wiki/services"
-	"digimon-story-wiki/utils"
+	"digimon-story-evolution/dto/request"
+	"digimon-story-evolution/services"
+	"digimon-story-evolution/utils"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"net/http"

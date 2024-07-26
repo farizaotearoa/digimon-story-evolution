@@ -1,8 +1,8 @@
 package main
 
 import (
-	"digimon-story-wiki/routes"
-	"digimon-story-wiki/utils"
+	"digimon-story-evolution/routes"
+	"digimon-story-evolution/utils"
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

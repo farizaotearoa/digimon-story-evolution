@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"digimon-story-wiki/controllers"
+	"digimon-story-evolution/controllers"
 	"github.com/gin-gonic/gin"
 )
 

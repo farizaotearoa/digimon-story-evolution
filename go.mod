@@ -1,4 +1,4 @@
-module digimon-story-wiki
+module digimon-story-evolution
 
 go 1.20
 
