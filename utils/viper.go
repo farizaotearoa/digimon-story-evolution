@@ -39,6 +39,8 @@ func InitConfig() error {
 		v.Set("test.key", "test.value")
 		log.Printf("Test Key Value from v: %s", v.GetString("test.key"))
 		log.Printf("Test Key Value from viper: %s", _viper.GetString("test.key"))
+		log.Printf("Config logger path from v: %s", v.GetString(ConfigRootKey+LoggerPath))
+		log.Printf("Config logger path from viper: %s", _viper.GetString(ConfigRootKey+LoggerPath))
 		fmt.Println("Config file not found; falling back to environment variables.")
 	}
 
