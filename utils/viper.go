@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	_viper "github.com/spf13/viper"
 	"sync"
 )
@@ -31,13 +32,16 @@ func InitConfig() error {
 	v.SetConfigName(".env")
 	v.SetConfigType("json")
 	v.AddConfigPath(".")
+
 	var notFound *_viper.ConfigFileNotFoundError
 	if err := v.ReadInConfig(); err != nil {
 		if ok := errors.As(err, &notFound); !ok {
 			return err
 		}
-		return notFound
+		fmt.Println("Config file not found; falling back to environment variables.")
 	}
+
+	v.AutomaticEnv()
 
 	Config = &viper{
 		viper: v,
