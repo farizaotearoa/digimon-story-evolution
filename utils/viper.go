@@ -48,14 +48,14 @@ func InitConfig() error {
 }
 
 func initDefaultConfig(v *_viper.Viper) {
-	v.SetDefault(ConfigRootKey+DatabaseHost, "")
-	v.SetDefault(ConfigRootKey+DatabasePort, "")
-	v.SetDefault(ConfigRootKey+DatabaseName, "")
-	v.SetDefault(ConfigRootKey+DatabaseUsername, "")
-	v.SetDefault(ConfigRootKey+DatabasePassword, "")
-	v.SetDefault(ConfigRootKey+AppsName, "")
-	v.SetDefault(ConfigRootKey+AppsPort, "")
-	v.SetDefault(ConfigRootKey+LoggerPath, "")
-	v.SetDefault(ConfigRootKey+ImagesPath, "")
-	v.SetDefault(ConfigRootKey+CorsAllowOrigins, []string{""})
+	v.Set(ConfigRootKey+DatabaseHost, "")
+	v.Set(ConfigRootKey+DatabasePort, "")
+	v.Set(ConfigRootKey+DatabaseName, "")
+	v.Set(ConfigRootKey+DatabaseUsername, "")
+	v.Set(ConfigRootKey+DatabasePassword, "")
+	v.Set(ConfigRootKey+AppsName, "")
+	v.Set(ConfigRootKey+AppsPort, "")
+	v.Set(ConfigRootKey+LoggerPath, "")
+	v.Set(ConfigRootKey+ImagesPath, "")
+	v.Set(ConfigRootKey+CorsAllowOrigins, []string{""})
 }
