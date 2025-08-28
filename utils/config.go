@@ -75,9 +75,6 @@ func LoadConfig() *AppConfig {
 		log.Println(".env file loaded successfully")
 	}
 
-	log.Printf("DB_HOST: %s", os.Getenv("DB_HOST"))
-	log.Printf("APP_NAME: %s", os.Getenv("APP_NAME"))
-
 	config := &AppConfig{
 		Database: DatabaseConfig{
 			Host:     getEnvOrDefault("DB_HOST", "localhost"),
