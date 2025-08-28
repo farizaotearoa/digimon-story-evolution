@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+
 	"go.uber.org/zap"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -10,16 +11,16 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() {
-	if Config == nil {
+	if GlobalConfig == nil {
 		Logger.Fatal("Configuration is not loaded")
 	}
 
-	dbUser := Config.GetString(DatabaseUsername)
-	dbPassword := Config.GetString(DatabasePassword)
-	dbHost := Config.GetString(DatabaseHost)
-	dbPort := Config.GetInt(DatabasePort)
-	dbName := Config.GetString(DatabaseName)
-	dbSslMode := Config.GetString(DatabaseSslMode)
+	dbUser := GlobalConfig.Database.Username
+	dbPassword := GlobalConfig.Database.Password
+	dbHost := GlobalConfig.Database.Host
+	dbPort := GlobalConfig.Database.Port
+	dbName := GlobalConfig.Database.Name
+	dbSslMode := GlobalConfig.Database.SSLMode
 
 	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s TimeZone=Asia/Jakarta",
 		dbHost, dbPort, dbUser, dbPassword, dbName, dbSslMode)

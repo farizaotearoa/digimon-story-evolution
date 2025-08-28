@@ -3,9 +3,10 @@ package routes
 import (
 	"digimon-story-evolution/controllers"
 	"digimon-story-evolution/utils"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 func SetupRoutes(router *gin.Engine) {
@@ -16,13 +17,13 @@ func SetupRoutes(router *gin.Engine) {
 }
 
 func SetupImagesRoutes(router *gin.Engine) {
-	if strings.Contains(utils.Config.GetString(utils.ImagesPath), "http") {
+	if strings.Contains(utils.GlobalConfig.Images.Path, "http") {
 		router.GET("/images/*imagePath", func(c *gin.Context) {
 			imagePath := c.Param("imagePath")
-			cdnURL := utils.Config.GetString(utils.ImagesPath) + imagePath
+			cdnURL := utils.GlobalConfig.Images.Path + imagePath
 			c.Redirect(http.StatusMovedPermanently, cdnURL)
 		})
 	} else {
-		router.Static("/images", utils.Config.GetString(utils.ImagesPath))
+		router.Static("/images", utils.GlobalConfig.Images.Path)
 	}
 }

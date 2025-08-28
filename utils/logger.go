@@ -2,16 +2,17 @@ package utils
 
 import (
 	"fmt"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"os"
 	"time"
+
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 var Logger *zap.Logger
 
 func InitLogger() {
-	logDir := fmt.Sprintf("%s/%s", Config.GetString(LoggerPath), Config.GetString(AppsName))
+	logDir := fmt.Sprintf("%s/%s", GlobalConfig.Logger.Path, GlobalConfig.App.Name)
 	if err := os.MkdirAll(logDir, os.ModePerm); err != nil {
 		panic("Failed to create log directory: " + err.Error())
 	}
