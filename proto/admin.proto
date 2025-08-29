@@ -1,0 +1,172 @@
+syntax = "proto3";
+
+package admin;
+
+option go_package = "digimon-story-evolution/proto/admin";
+
+// Admin Service - handles admin operations and approval workflows
+service AdminService {
+  // Get pending contributions for admin review
+  rpc GetPendingContributions(GetPendingContributionsRequest) returns (GetPendingContributionsResponse);
+  
+  // Approve or reject a contribution
+  rpc ApproveContribution(ApproveContributionRequest) returns (ApproveContributionResponse);
+  
+  // Get contribution statistics for admin dashboard
+  rpc GetContributionStats(GetContributionStatsRequest) returns (GetContributionStatsResponse);
+  
+  // Get admin dashboard overview
+  rpc GetDashboardOverview(GetDashboardOverviewRequest) returns (GetDashboardOverviewResponse);
+}
+
+// Request for getting pending contributions
+message GetPendingContributionsRequest {
+  int32 page_num = 1;
+  int32 page_size = 2;
+  string filter_type = 3; // "all", "new", "update", "correction"
+  string sort_by = 4; // "created_at", "user_id", "digimon_id"
+  string sort_order = 5; // "asc", "desc"
+}
+
+// Response for pending contributions
+message GetPendingContributionsResponse {
+  repeated PendingContribution contributions = 1;
+  int32 total_count = 2;
+}
+
+// Request for approving a contribution
+message ApproveContributionRequest {
+  string contribution_id = 1;
+  string admin_id = 2;
+  string decision = 3; // "approve", "reject"
+  string comments = 4;
+  map<string, string> metadata = 5;
+}
+
+// Response for approving a contribution
+message ApproveContributionResponse {
+  bool success = 1;
+  string message = 2;
+  ContributionStatus updated_contribution = 3;
+}
+
+// Request for getting contribution statistics
+message GetContributionStatsRequest {
+  string time_period = 1; // "day", "week", "month", "year"
+  string admin_id = 2;
+}
+
+// Response for contribution statistics
+message GetContributionStatsResponse {
+  ContributionStats stats = 1;
+}
+
+// Request for getting dashboard overview
+message GetDashboardOverviewRequest {
+  string admin_id = 1;
+}
+
+// Response for dashboard overview
+message GetDashboardOverviewResponse {
+  DashboardOverview overview = 1;
+}
+
+// Pending contribution with user information
+message PendingContribution {
+  string id = 1;
+  string user_id = 2;
+  string digimon_id = 3;
+  string type = 4;
+  string description = 5;
+  string status = 6;
+  string created_at = 7;
+  UserInfo user_info = 8;
+  DigimonInfo digimon_info = 9;
+}
+
+// User information for admin view
+message UserInfo {
+  string id = 1;
+  string username = 2;
+  string email = 3;
+  string avatar = 4;
+  int32 total_contributions = 5;
+  int32 approved_contributions = 6;
+  string member_since = 7;
+}
+
+// Digimon information for admin view
+message DigimonInfo {
+  string id = 1;
+  string name = 2;
+  string stage = 3;
+  string type = 4;
+  string image = 5;
+}
+
+// Contribution status after approval/rejection
+message ContributionStatus {
+  string id = 1;
+  string status = 2;
+  string approved_by = 3;
+  string approved_at = 4;
+  string comments = 5;
+}
+
+// Contribution statistics
+message ContributionStats {
+  int32 total_pending = 1;
+  int32 total_approved = 2;
+  int32 total_rejected = 3;
+  int32 new_contributions_today = 4;
+  int32 approved_today = 5;
+  int32 rejected_today = 6;
+  repeated ContributionTypeStats by_type = 7;
+  repeated ContributionStageStats by_stage = 8;
+}
+
+// Statistics by contribution type
+message ContributionTypeStats {
+  string type = 1;
+  int32 count = 2;
+  int32 pending = 3;
+  int32 approved = 4;
+  int32 rejected = 5;
+}
+
+// Statistics by Digimon stage
+message ContributionStageStats {
+  string stage = 1;
+  int32 count = 2;
+  int32 pending = 3;
+  int32 approved = 4;
+  int32 rejected = 5;
+}
+
+// Dashboard overview
+message DashboardOverview {
+  ContributionStats stats = 1;
+  repeated RecentActivity recent_activities = 2;
+  repeated TopContributor top_contributors = 3;
+  repeated PendingContribution urgent_pending = 4;
+}
+
+// Recent activity
+message RecentActivity {
+  string id = 1;
+  string type = 2; // "contribution_created", "contribution_approved", "contribution_rejected"
+  string user_id = 3;
+  string digimon_id = 4;
+  string timestamp = 5;
+  string description = 6;
+}
+
+// Top contributor
+message TopContributor {
+  string user_id = 1;
+  string username = 2;
+  string email = 3;
+  int32 total_contributions = 4;
+  int32 approved_contributions = 5;
+  double approval_rate = 6;
+}
