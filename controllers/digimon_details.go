@@ -18,7 +18,7 @@ func GetDigimonDetails(c *gin.Context) {
 		return
 	}
 
-	details, err := services.GetDigimonDetails(req)
+	details, err := services.GetDigimonDetails(c.Request.Context(), req)
 	if err != nil {
 		utils.Logger.Error("Failed to get digimon details", zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
@@ -35,7 +35,7 @@ func GetDigimonEvolutions(c *gin.Context) {
 		return
 	}
 
-	details, err := services.GetDigimonEvolution(req)
+	details, err := services.GetDigimonEvolution(c.Request.Context(), req)
 	if err != nil {
 		utils.Logger.Error("Failed to get digimon evolutions", zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})

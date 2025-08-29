@@ -31,7 +31,7 @@ func GetDigimonList(c *gin.Context) {
 		req.PageNum = 1
 	}
 
-	digimon, err := services.GetAllDigimonList(req)
+	digimon, err := services.GetAllDigimonList(c.Request.Context(), req)
 	if err != nil {
 		utils.Logger.Error("Failed to get digimon list", zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
@@ -47,7 +47,7 @@ func GetDigimonListSize(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request format"})
 		return
 	}
-	size, err := services.GetAllDigimonListSize(req)
+	size, err := services.GetAllDigimonListSize(c.Request.Context(), req)
 	if err != nil {
 		utils.Logger.Error("Failed to get digimon list size", zap.Error(err))
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})

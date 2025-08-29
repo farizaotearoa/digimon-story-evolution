@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"digimon-story-evolution/routes"
+	"digimon-story-evolution/services"
 	"digimon-story-evolution/utils"
 	"fmt"
 	"net/http"
@@ -16,6 +17,7 @@ import (
 	"go.uber.org/zap"
 )
 
+// setupApplication initializes all application components
 func setupApplication() *gin.Engine {
 	// Initialize configuration from environment variables
 	utils.LoadConfig()
@@ -24,8 +26,8 @@ func setupApplication() *gin.Engine {
 	utils.InitLogger()
 	defer utils.Logger.Sync()
 
-	// Connect To PostgreSQL
-	utils.ConnectDatabase()
+	// Initialize service clients
+	services.Clients = services.NewServiceClients()
 
 	// Set up routes with custom middleware
 	r := gin.New()
@@ -48,7 +50,9 @@ func setupApplication() *gin.Engine {
 	return r
 }
 
+// runServer starts the HTTP server with graceful shutdown
 func runServer(router *gin.Engine) {
+	// Start server
 	appName := utils.GlobalConfig.App.Name
 	utils.Logger.Info(fmt.Sprintf("Starting %s", appName))
 
@@ -63,20 +67,20 @@ func runServer(router *gin.Engine) {
 		Handler: router,
 	}
 
-	// Start server
+	// Start server in a goroutine
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			utils.Logger.Fatal("Failed to start server", zap.Error(err))
 		}
 	}()
 
-	// Wait for interrupt signal
+	// Wait for interrupt signal to gracefully shutdown the server
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	utils.Logger.Info("Shutting down server...")
 
-	// Give outstanding requests additional time for completion
+	// Give outstanding requests a deadline for completion
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
@@ -88,6 +92,9 @@ func runServer(router *gin.Engine) {
 }
 
 func main() {
+	// Setup application components
 	router := setupApplication()
+
+	// Run the server
 	runServer(router)
 }
