@@ -57,6 +57,9 @@ coverage/
 *.so
 *.dylib
 
+# Project-specific binary
+digimon-story-evolution
+
 # Golang workspace file
 go.work
 
