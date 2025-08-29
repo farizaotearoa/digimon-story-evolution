@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package digimon;
 
-option go_package = "digimon-story-evolution/proto/digimon";
+option go_package = "digimon-story-evolution/proto";
 
 // Digimon Service - handles all Digimon-related operations
 service DigimonService {

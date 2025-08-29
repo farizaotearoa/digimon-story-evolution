@@ -4,7 +4,7 @@
 // 	protoc        v6.32.0
 // source: proto/admin.proto
 
-package admin
+package proto
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -1446,7 +1446,7 @@ const file_proto_admin_proto_rawDesc = "" +
 	"\x17GetPendingContributions\x12%.admin.GetPendingContributionsRequest\x1a&.admin.GetPendingContributionsResponse\x12\\\n" +
 	"\x13ApproveContribution\x12!.admin.ApproveContributionRequest\x1a\".admin.ApproveContributionResponse\x12_\n" +
 	"\x14GetContributionStats\x12\".admin.GetContributionStatsRequest\x1a#.admin.GetContributionStatsResponse\x12_\n" +
-	"\x14GetDashboardOverview\x12\".admin.GetDashboardOverviewRequest\x1a#.admin.GetDashboardOverviewResponseB%Z#digimon-story-evolution/proto/adminb\x06proto3"
+	"\x14GetDashboardOverview\x12\".admin.GetDashboardOverviewRequest\x1a#.admin.GetDashboardOverviewResponseB\x1fZ\x1ddigimon-story-evolution/protob\x06proto3"
 
 var (
 	file_proto_admin_proto_rawDescOnce sync.Once

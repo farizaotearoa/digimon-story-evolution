@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package admin;
 
-option go_package = "digimon-story-evolution/proto/admin";
+option go_package = "digimon-story-evolution/proto";
 
 // Admin Service - handles admin operations and approval workflows
 service AdminService {

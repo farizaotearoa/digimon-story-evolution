@@ -42,21 +42,21 @@ func NewServiceClients() *ServiceClients {
 // NewDigimonServiceClient creates a new Digimon service client
 func NewDigimonServiceClient() *DigimonServiceClient {
 	config := utils.GlobalConfig.Services.DigimonService
-	client := utils.NewHTTPClient(config.BaseURL, config.Timeout)
+	client := utils.NewHTTPClient("http://"+config.GRPCAddress, config.Timeout)
 	return &DigimonServiceClient{client: client}
 }
 
 // NewUserServiceClient creates a new User service client
 func NewUserServiceClient() *UserServiceClient {
 	config := utils.GlobalConfig.Services.UserService
-	client := utils.NewHTTPClient(config.BaseURL, config.Timeout)
+	client := utils.NewHTTPClient("http://"+config.GRPCAddress, config.Timeout)
 	return &UserServiceClient{client: client}
 }
 
 // NewAdminServiceClient creates a new Admin service client
 func NewAdminServiceClient() *AdminServiceClient {
 	config := utils.GlobalConfig.Services.AdminService
-	client := utils.NewHTTPClient(config.BaseURL, config.Timeout)
+	client := utils.NewHTTPClient("http://"+config.GRPCAddress, config.Timeout)
 	return &AdminServiceClient{client: client}
 }
 

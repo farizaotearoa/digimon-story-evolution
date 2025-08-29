@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package user;
 
-option go_package = "digimon-story-evolution/proto/user";
+option go_package = "digimon-story-evolution/proto";
 
 // User Service - handles user management and contributions
 service UserService {
@@ -94,11 +94,11 @@ message Contribution {
   string created_at = 7;
   string updated_at = 8;
   map<string, string> metadata = 9;
-  UserInfo user_info = 10;
+  UserContributionInfo user_info = 10;
 }
 
-// User information
-message UserInfo {
+// User information for contributions
+message UserContributionInfo {
   string id = 1;
   string username = 2;
   string email = 3;

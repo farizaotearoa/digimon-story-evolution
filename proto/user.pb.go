@@ -4,7 +4,7 @@
 // 	protoc        v6.32.0
 // source: proto/user.proto
 
-package user
+package proto
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -571,7 +571,7 @@ type Contribution struct {
 	CreatedAt     string                 `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     string                 `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	Metadata      map[string]string      `protobuf:"bytes,9,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	UserInfo      *UserInfo              `protobuf:"bytes,10,opt,name=user_info,json=userInfo,proto3" json:"user_info,omitempty"`
+	UserInfo      *UserContributionInfo  `protobuf:"bytes,10,opt,name=user_info,json=userInfo,proto3" json:"user_info,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -669,15 +669,15 @@ func (x *Contribution) GetMetadata() map[string]string {
 	return nil
 }
 
-func (x *Contribution) GetUserInfo() *UserInfo {
+func (x *Contribution) GetUserInfo() *UserContributionInfo {
 	if x != nil {
 		return x.UserInfo
 	}
 	return nil
 }
 
-// User information
-type UserInfo struct {
+// User information for contributions
+type UserContributionInfo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
@@ -687,20 +687,20 @@ type UserInfo struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *UserInfo) Reset() {
-	*x = UserInfo{}
+func (x *UserContributionInfo) Reset() {
+	*x = UserContributionInfo{}
 	mi := &file_proto_user_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *UserInfo) String() string {
+func (x *UserContributionInfo) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*UserInfo) ProtoMessage() {}
+func (*UserContributionInfo) ProtoMessage() {}
 
-func (x *UserInfo) ProtoReflect() protoreflect.Message {
+func (x *UserContributionInfo) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_user_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -712,33 +712,33 @@ func (x *UserInfo) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use UserInfo.ProtoReflect.Descriptor instead.
-func (*UserInfo) Descriptor() ([]byte, []int) {
+// Deprecated: Use UserContributionInfo.ProtoReflect.Descriptor instead.
+func (*UserContributionInfo) Descriptor() ([]byte, []int) {
 	return file_proto_user_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *UserInfo) GetId() string {
+func (x *UserContributionInfo) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *UserInfo) GetUsername() string {
+func (x *UserContributionInfo) GetUsername() string {
 	if x != nil {
 		return x.Username
 	}
 	return ""
 }
 
-func (x *UserInfo) GetEmail() string {
+func (x *UserContributionInfo) GetEmail() string {
 	if x != nil {
 		return x.Email
 	}
 	return ""
 }
 
-func (x *UserInfo) GetAvatar() string {
+func (x *UserContributionInfo) GetAvatar() string {
 	if x != nil {
 		return x.Avatar
 	}
@@ -788,7 +788,7 @@ const file_proto_user_proto_rawDesc = "" +
 	"\x0fcontribution_id\x18\x01 \x01(\tR\x0econtributionId\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\"6\n" +
 	"\x1aDeleteContributionResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x8a\x03\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x96\x03\n" +
 	"\fContribution\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\tR\x06userId\x12\x1d\n" +
@@ -801,13 +801,13 @@ const file_proto_user_proto_rawDesc = "" +
 	"created_at\x18\a \x01(\tR\tcreatedAt\x12\x1d\n" +
 	"\n" +
 	"updated_at\x18\b \x01(\tR\tupdatedAt\x12<\n" +
-	"\bmetadata\x18\t \x03(\v2 .user.Contribution.MetadataEntryR\bmetadata\x12+\n" +
+	"\bmetadata\x18\t \x03(\v2 .user.Contribution.MetadataEntryR\bmetadata\x127\n" +
 	"\tuser_info\x18\n" +
-	" \x01(\v2\x0e.user.UserInfoR\buserInfo\x1a;\n" +
+	" \x01(\v2\x1a.user.UserContributionInfoR\buserInfo\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"d\n" +
-	"\bUserInfo\x12\x0e\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"p\n" +
+	"\x14UserContributionInfo\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\x12\x14\n" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x16\n" +
@@ -817,7 +817,7 @@ const file_proto_user_proto_rawDesc = "" +
 	"\x14GetUserContributions\x12!.user.GetUserContributionsRequest\x1a\".user.GetUserContributionsResponse\x12N\n" +
 	"\x0fGetContribution\x12\x1c.user.GetContributionRequest\x1a\x1d.user.GetContributionResponse\x12W\n" +
 	"\x12UpdateContribution\x12\x1f.user.UpdateContributionRequest\x1a .user.UpdateContributionResponse\x12W\n" +
-	"\x12DeleteContribution\x12\x1f.user.DeleteContributionRequest\x1a .user.DeleteContributionResponseB$Z\"digimon-story-evolution/proto/userb\x06proto3"
+	"\x12DeleteContribution\x12\x1f.user.DeleteContributionRequest\x1a .user.DeleteContributionResponseB\x1fZ\x1ddigimon-story-evolution/protob\x06proto3"
 
 var (
 	file_proto_user_proto_rawDescOnce sync.Once
@@ -844,7 +844,7 @@ var file_proto_user_proto_goTypes = []any{
 	(*DeleteContributionRequest)(nil),    // 8: user.DeleteContributionRequest
 	(*DeleteContributionResponse)(nil),   // 9: user.DeleteContributionResponse
 	(*Contribution)(nil),                 // 10: user.Contribution
-	(*UserInfo)(nil),                     // 11: user.UserInfo
+	(*UserContributionInfo)(nil),         // 11: user.UserContributionInfo
 	nil,                                  // 12: user.CreateContributionRequest.MetadataEntry
 	nil,                                  // 13: user.UpdateContributionRequest.MetadataEntry
 	nil,                                  // 14: user.Contribution.MetadataEntry
@@ -857,7 +857,7 @@ var file_proto_user_proto_depIdxs = []int32{
 	13, // 4: user.UpdateContributionRequest.metadata:type_name -> user.UpdateContributionRequest.MetadataEntry
 	10, // 5: user.UpdateContributionResponse.contribution:type_name -> user.Contribution
 	14, // 6: user.Contribution.metadata:type_name -> user.Contribution.MetadataEntry
-	11, // 7: user.Contribution.user_info:type_name -> user.UserInfo
+	11, // 7: user.Contribution.user_info:type_name -> user.UserContributionInfo
 	0,  // 8: user.UserService.CreateContribution:input_type -> user.CreateContributionRequest
 	2,  // 9: user.UserService.GetUserContributions:input_type -> user.GetUserContributionsRequest
 	4,  // 10: user.UserService.GetContribution:input_type -> user.GetContributionRequest

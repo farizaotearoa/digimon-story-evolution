@@ -4,7 +4,7 @@
 // 	protoc        v6.32.0
 // source: proto/digimon.proto
 
-package digimon
+package proto
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -837,7 +837,7 @@ const file_proto_digimon_proto_rawDesc = "" +
 	"\x0eGetDigimonList\x12\x1e.digimon.GetDigimonListRequest\x1a\x1f.digimon.GetDigimonListResponse\x12Y\n" +
 	"\x12GetDigimonListSize\x12\x1e.digimon.GetDigimonListRequest\x1a#.digimon.GetDigimonListSizeResponse\x12Z\n" +
 	"\x11GetDigimonDetails\x12!.digimon.GetDigimonDetailsRequest\x1a\".digimon.GetDigimonDetailsResponse\x12`\n" +
-	"\x14GetDigimonEvolutions\x12!.digimon.GetDigimonDetailsRequest\x1a%.digimon.GetDigimonEvolutionsResponseB'Z%digimon-story-evolution/proto/digimonb\x06proto3"
+	"\x14GetDigimonEvolutions\x12!.digimon.GetDigimonDetailsRequest\x1a%.digimon.GetDigimonEvolutionsResponseB\x1fZ\x1ddigimon-story-evolution/protob\x06proto3"
 
 var (
 	file_proto_digimon_proto_rawDescOnce sync.Once

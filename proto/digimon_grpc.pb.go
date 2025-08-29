@@ -4,7 +4,7 @@
 // - protoc             v6.32.0
 // source: proto/digimon.proto
 
-package digimon
+package proto
 
 import (
 	context "context"

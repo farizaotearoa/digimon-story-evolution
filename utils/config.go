@@ -44,18 +44,18 @@ type ServicesConfig struct {
 }
 
 type DigimonServiceConfig struct {
-	BaseURL string
-	Timeout time.Duration
+	GRPCAddress string
+	Timeout     time.Duration
 }
 
 type UserServiceConfig struct {
-	BaseURL string
-	Timeout time.Duration
+	GRPCAddress string
+	Timeout     time.Duration
 }
 
 type AdminServiceConfig struct {
-	BaseURL string
-	Timeout time.Duration
+	GRPCAddress string
+	Timeout     time.Duration
 }
 
 // Global config instance
@@ -118,16 +118,16 @@ func LoadConfig() *AppConfig {
 		},
 		Services: ServicesConfig{
 			DigimonService: DigimonServiceConfig{
-				BaseURL: getEnvOrDefault("DIGIMON_SERVICE_URL", "http://localhost:8081"),
-				Timeout: getEnvAsDurationOrDefault("DIGIMON_SERVICE_TIMEOUT", 30*time.Second),
+				GRPCAddress: getEnvOrDefault("DIGIMON_SERVICE_GRPC", "localhost:8081"),
+				Timeout:     getEnvAsDurationOrDefault("DIGIMON_SERVICE_TIMEOUT", 30*time.Second),
 			},
 			UserService: UserServiceConfig{
-				BaseURL: getEnvOrDefault("USER_SERVICE_URL", "http://localhost:8082"),
-				Timeout: getEnvAsDurationOrDefault("USER_SERVICE_TIMEOUT", 30*time.Second),
+				GRPCAddress: getEnvOrDefault("USER_SERVICE_GRPC", "localhost:8082"),
+				Timeout:     getEnvAsDurationOrDefault("USER_SERVICE_TIMEOUT", 30*time.Second),
 			},
 			AdminService: AdminServiceConfig{
-				BaseURL: getEnvOrDefault("ADMIN_SERVICE_URL", "http://localhost:8083"),
-				Timeout: getEnvAsDurationOrDefault("ADMIN_SERVICE_TIMEOUT", 30*time.Second),
+				GRPCAddress: getEnvOrDefault("ADMIN_SERVICE_GRPC", "localhost:8083"),
+				Timeout:     getEnvAsDurationOrDefault("ADMIN_SERVICE_TIMEOUT", 30*time.Second),
 			},
 		},
 	}
